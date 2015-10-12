@@ -48,6 +48,14 @@ public class TestCollectionDeserialization
         public Iterable<XBean> nums;
     }
 
+    static class FinalListX {
+        public final List<XBean> values = new ArrayList<XBean>();
+
+        public List<XBean> getValues() {
+            return values;
+        }
+    }
+
     static class KeyListBean {
         public List<Key> keys;
     }
@@ -240,5 +248,36 @@ public class TestCollectionDeserialization
             assertEquals(1, refs.get(1).getIndex());
             assertNull(refs.get(1).getFieldName());
         }
+    }
+
+    /**
+     * https://github.com/FasterXML/jackson-databind/issues/966
+     * @throws Exception
+     */
+    public void testClearCollectionBeforeDeser() throws Exception{
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.CAN_OVERRIDE_FINAL_COLLECTION_OR_MAP_INSTANCE);
+        mapper.enable(DeserializationFeature.CLEAR_EXISTING_COLLECTION_OR_MAP_BEFORE_DESERIALIZATION);
+
+        FinalListX finalListAsIterableX = new FinalListX();
+        String json = mapper.writeValueAsString(finalListAsIterableX);
+
+        List<XBean> listInstance = finalListAsIterableX.values;
+        finalListAsIterableX.values.add(new XBean());
+
+        mapper.readerForUpdating(finalListAsIterableX).readValue(json);
+        assertTrue(finalListAsIterableX.values.isEmpty());
+        assertTrue(finalListAsIterableX.values == listInstance);
+
+        finalListAsIterableX.values.add(new XBean());
+        finalListAsIterableX.values.add(new XBean());
+
+        json = mapper.writeValueAsString(finalListAsIterableX);
+
+        finalListAsIterableX.values.add(new XBean());
+
+        mapper.readerForUpdating(finalListAsIterableX).readValue(json);
+        assertTrue(finalListAsIterableX.values.size() == 2);
+        assertTrue(finalListAsIterableX.values == listInstance);
     }
 }
