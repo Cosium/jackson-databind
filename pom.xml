@@ -141,6 +141,7 @@ javax.xml.datatype, javax.xml.namespace, javax.xml.parsers
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${version.plugin.javadoc}</version>
         <configuration>
+          <failOnError>false</failOnError>
           <links>
             <link>http://docs.oracle.com/javase/6/docs/api/</link>
             <link>http://fasterxml.github.com/jackson-annotations/javadoc/2.5/</link>
