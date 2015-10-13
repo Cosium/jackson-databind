@@ -122,6 +122,27 @@ javax.xml.datatype, javax.xml.namespace, javax.xml.parsers
 
   <build>
      <plugins>
+       <plugin>
+         <artifactId>maven-source-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>attach-sources</id>
+             <phase>deploy</phase>
+             <goals><goal>jar-no-fork</goal></goals>
+           </execution>
+         </executions>
+       </plugin>
+       <plugin>
+         <!-- explicitly define maven-deploy-plugin after other to force exec order -->
+         <artifactId>maven-deploy-plugin</artifactId>
+         <executions>
+           <execution>
+             <id>deploy</id>
+             <phase>deploy</phase>
+             <goals><goal>deploy</goal></goals>
+           </execution>
+         </executions>
+       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <version>${version.plugin.surefire}</version>
@@ -140,6 +161,13 @@ javax.xml.datatype, javax.xml.namespace, javax.xml.parsers
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${version.plugin.javadoc}</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>deploy</phase>
+            <goals><goal>jar</goal></goals>
+          </execution>
+        </executions>
         <configuration>
           <failOnError>false</failOnError>
           <links>
