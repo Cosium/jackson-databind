@@ -18,10 +18,9 @@
   <inceptionYear>2008</inceptionYear>
 
   <scm>
-    <connection>scm:git:git@github.com:FasterXML/jackson-databind.git</connection>
-    <developerConnection>scm:git:git@github.com:FasterXML/jackson-databind.git</developerConnection>
-    <url>http://github.com/FasterXML/jackson-databind</url>
-    <tag>jackson-databind-2.9.3</tag>
+    <connection>scm:git:git@github.com:Cosium/jackson-databind.git</connection>
+    <developerConnection>scm:git:git@github.com:Cosium/jackson-databind.git</developerConnection>
+    <url>http://github.com/Cosium/jackson-databind</url>
   </scm>
 
   <distributionManagement>
